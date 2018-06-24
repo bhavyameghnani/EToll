@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView textView;
-    private Button button;
+    private Button button , buttonMyProfile , buttonMap;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -32,12 +32,21 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         textView = (TextView)findViewById(R.id.textViewWelcome);
 
+
+
         String defaultMessage = textView.getText().toString().trim();
         textView.setText(firebaseUser.getEmail() + defaultMessage);
 
         button = (Button) findViewById(R.id.userLogOut);
+        buttonMyProfile = (Button)findViewById(R.id.MyProfile);
+        buttonMap = (Button)findViewById(R.id.dashboardMap);
+
+
+
 
         button.setOnClickListener(this);
+        buttonMyProfile.setOnClickListener(this);
+        buttonMap.setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +58,19 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             finish();
             Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
             startActivity(intent);
+        }
+
+        if(v==buttonMyProfile){
+            finish();
+            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+
+        if(v==buttonMap){
+            finish();
+            Intent intent = new Intent(DashboardActivity.this, MapsActivity.class);
+            startActivity(intent);
+
         }
 
     }

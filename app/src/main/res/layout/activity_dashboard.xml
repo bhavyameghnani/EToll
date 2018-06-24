@@ -21,7 +21,22 @@
             android:layout_height="wrap_content"
             android:text="Welcome to EToll"
             android:textAlignment="center"
-            android:textSize="40dp" />
+            android:textSize="25dp" />
+
+
+        <Button
+            android:id="@+id/MyProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="MyProfile" />
+
+        <Button
+            android:id="@+id/dashboardMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Map" />
 
         <Button
             android:id="@+id/userLogOut"
