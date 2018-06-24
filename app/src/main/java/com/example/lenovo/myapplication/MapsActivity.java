@@ -1,6 +1,12 @@
 package com.example.lenovo.myapplication;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 //import android.location.LocationListener;
 import android.support.annotation.NonNull;
@@ -11,6 +17,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -21,14 +31,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Random;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleApiClient.ConnectionCallbacks , GoogleApiClient.OnConnectionFailedListener,LocationListener{
 
-    private GoogleMap mMap;
+    private GoogleMap myMap;
 
     private static final int MY_PERMISSION_REQUEST_CODE =7192;
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 300193;
@@ -42,6 +58,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static int FASTEST_INTERVAL=3000;
     private static int DISPLACEMENT=10;
 
+    DatabaseReference ref;
+    GeoFire geoFire;
+
+    Marker myCurrent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +71,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        ref = FirebaseDatabase.getInstance().getReference("MyLocation");
+        geoFire = new GeoFire(ref);
+
 
         setUpLocation();
     }
@@ -97,8 +122,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         myLastLocation = LocationServices.FusedLocationApi.getLastLocation(myGoogleApiClient);
         if(myLastLocation!=null){
-            double latitude = myLastLocation.getLatitude();
-            double longitude = myLastLocation.getLongitude();
+            final double latitude = myLastLocation.getLatitude();
+            final double longitude = myLastLocation.getLongitude();
+
+            //Update To The Firebase
+            geoFire.setLocation("You", new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
+                @Override
+                public void onComplete(String key, DatabaseError error) {
+                    //ADD Marker
+                    if(myCurrent!=null){
+                        myCurrent.remove();
+                    }
+                    myCurrent = myMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(latitude,longitude))
+                            .title("You"));
+
+                    //Move The Camera Position
+                    myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude,longitude),12.0f));
+                }
+            });
+
+
 
             Log.d("EToll",String.format("Your Location was changed %f / %f",latitude,longitude));
         }
@@ -144,12 +188,64 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        myMap  = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //Creating Dangerous Area
+        LatLng dangerous_area = new LatLng(19.2399011,72.85648579999997);
+        myMap.addCircle(new CircleOptions()
+        .center(dangerous_area)
+        .radius(500)
+        .strokeColor(Color.BLUE)
+        .fillColor(0x220000ff)
+        .strokeWidth(5.0f));
+
+        //Add GeoQuery Here
+
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(dangerous_area.latitude,dangerous_area.longitude),0.5f);
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                sendNotification("EToll",String.format("%s Entered into the Toll Area",key));
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+                sendNotification("EToll",String.format("%s Exited from the Toll Area",key));
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+                Log.d("MOVE",String.format("%s Moveing within the dangerous area[%f/%f]",key,location.latitude,location.longitude));
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+                Log.e("Error","check:"+error);
+
+            }
+        });
+
+    }
+
+    private void sendNotification(String title, String content) {
+        Notification.Builder builder = new Notification.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle(title)
+                .setContentText(content);
+        NotificationManager manager =  (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this , MapsActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this , 0 ,intent , PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(pendingIntent);
+        Notification not = builder.build();
+        not.flags |= Notification.FLAG_AUTO_CANCEL;
+        not.defaults |= Notification.DEFAULT_SOUND;
+
+        manager.notify(new Random().nextInt(),not);
     }
 
     @Override
