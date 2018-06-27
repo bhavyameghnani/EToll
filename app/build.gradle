@@ -38,5 +38,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:+'
     implementation 'com.firebase:geofire-android:+'
 
+    implementation 'com.google.zxing:core:+'
+    implementation 'com.journeyapps:zxing-android-embedded:+'
+
 }
 apply plugin: 'com.google.gms.google-services'

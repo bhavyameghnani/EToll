@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="152dp">
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="109dp">
 
         <TextView
             android:id="@+id/textViewWelcome"
@@ -39,11 +39,19 @@
             android:text="Map" />
 
         <Button
+            android:id="@+id/userQRCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="QR-Code" />
+
+        <Button
             android:id="@+id/userLogOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:text="LogOut" />
+
 
     </LinearLayout>
 
