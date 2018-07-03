@@ -64,7 +64,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
 
         if(v==buttonMyProfile){
             finish();
-            Intent intent = new Intent(DashboardActivity.this, LoginActivity.class);
+            Intent intent = new Intent(DashboardActivity.this, MyProfile.class);
             startActivity(intent);
         }
 

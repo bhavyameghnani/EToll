@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MyProfile">
+
+    <LinearLayout
+
+        android:layout_width="346dp"
+        android:layout_height="479dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="22dp"
+        tools:layout_editor_absoluteY="16dp">
+
+        <EditText
+            android:id="@+id/mpName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Name Here ..."
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="85dp"
+            tools:layout_editor_absoluteY="41dp" />
+
+
+        <EditText
+            android:id="@+id/mpAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Address Here ..."
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="84dp"
+            tools:layout_editor_absoluteY="124dp" />
+
+        <EditText
+            android:id="@+id/mpCell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Number Here ..."
+            android:inputType="phone"
+            tools:layout_editor_absoluteX="81dp"
+            tools:layout_editor_absoluteY="198dp" />
+
+        <EditText
+            android:id="@+id/mpLicense"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter License Here..."
+            android:inputType="textPersonName"
+
+            tools:layout_editor_absoluteX="84dp"
+            tools:layout_editor_absoluteY="218dp" />
+
+        <Button
+            android:id="@+id/mpBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BACK"
+            tools:layout_editor_absoluteX="210dp"
+            tools:layout_editor_absoluteY="421dp" />
+
+        <Button
+            android:id="@+id/mpSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DONE"
+            tools:layout_editor_absoluteX="84dp"
+            tools:layout_editor_absoluteY="421dp" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
