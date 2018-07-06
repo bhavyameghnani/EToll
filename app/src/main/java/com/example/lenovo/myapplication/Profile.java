@@ -1,37 +1,37 @@
 package com.example.lenovo.myapplication;
 
 public class Profile {
-    String ID, fullname , address , license , cell;
+    String profileId, profileName , profileAddress , profileLicense , profilePhone;
 
     public Profile(){
 
     }
 
-    public Profile(String ID , String fullname , String address , String license , String cell){
-        this.ID = ID;
-        this.fullname = fullname ;
-        this.address = address;
-        this.license = license;
-        this.cell = cell;
+    public Profile(String UID , String fullName , String address , String license , String cell){
+        profileId = UID;
+        profileName = fullName ;
+        profileAddress = address;
+        profileLicense = license;
+        profilePhone = cell;
     }
 
-    public String getID() {
-        return ID;
+    public String getProfileId() {
+        return profileId;
     }
 
-    public String getFullname() {
-        return fullname;
+    public String getProfileName() {
+        return profileName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getProfileAddress() {
+        return profileAddress;
     }
 
-    public String getLicense() {
-        return license;
+    public String getProfileLicense() {
+        return profileLicense;
     }
 
-    public String getCell() {
-        return cell;
+    public String getProfilePhone() {
+        return profilePhone;
     }
 }

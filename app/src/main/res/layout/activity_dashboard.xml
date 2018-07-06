@@ -46,6 +46,13 @@
             android:text="QR-Code" />
 
         <Button
+            android:id="@+id/userSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Search Database" />
+
+        <Button
             android:id="@+id/userLogOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

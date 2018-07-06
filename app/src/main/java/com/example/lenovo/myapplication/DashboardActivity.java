@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView textView;
-    private Button button , buttonMyProfile , buttonMap , buttonQRCode;
+    private Button button , buttonMyProfile , buttonMap , buttonQRCode , buttonSearch;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -41,6 +41,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         buttonMyProfile = (Button)findViewById(R.id.MyProfile);
         buttonMap = (Button)findViewById(R.id.dashboardMap);
         buttonQRCode = (Button)findViewById(R.id.userQRCode);
+        buttonSearch = (Button)findViewById(R.id.userSearch);
 
 
 
@@ -49,6 +50,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         buttonMyProfile.setOnClickListener(this);
         buttonMap.setOnClickListener(this);
         buttonQRCode.setOnClickListener(this);
+        buttonSearch.setOnClickListener(this);
     }
 
     @Override
@@ -78,6 +80,12 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         if(v==buttonQRCode){
             finish();
             Intent intent = new Intent(DashboardActivity.this, QRCode.class);
+            startActivity(intent);
+        }
+
+        if(v==buttonSearch){
+            finish();
+            Intent intent = new Intent(DashboardActivity.this, SearchDatabase.class);
             startActivity(intent);
         }
 

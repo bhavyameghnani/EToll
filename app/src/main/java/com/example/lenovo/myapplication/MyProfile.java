@@ -52,17 +52,17 @@ public class MyProfile extends AppCompatActivity implements View.OnClickListener
     }
 
     public void addProfile(){
-        String fullname = MPname.getText().toString().trim();
+        String fullName = MPname.getText().toString().trim();
         String address = MPaddress.getText().toString().trim();
         String license = MPlicense.getText().toString().trim();
         String cell = MPnumber.getText().toString().trim();
 
-        if(!TextUtils.isEmpty(fullname) && (!TextUtils.isEmpty(address)) && !TextUtils.isEmpty(license) && !TextUtils.isEmpty(cell) ){
-            String ID = databaseReference.push().getKey();
+        if(!TextUtils.isEmpty(fullName) && (!TextUtils.isEmpty(address)) && !TextUtils.isEmpty(license) && !TextUtils.isEmpty(cell) ){
+            String UID = databaseReference.push().getKey();
 
-            Profile profile = new Profile(ID , fullname , address , license , cell);
+            Profile profile = new Profile(UID , fullName , address , license , cell);
 
-            databaseReference.child(ID).setValue(profile);
+            databaseReference.child(UID).setValue(profile);
             Toast.makeText(this, " All The Details Added Successfully", Toast.LENGTH_SHORT).show();
         }
         else{
